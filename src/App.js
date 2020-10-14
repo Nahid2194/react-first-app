@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
@@ -24,19 +24,16 @@ function App() {
             StudentName.map(student => <li>{student}</li>)
           }
         </ol>
+        <Counter></Counter>
+        <Users></Users>
         {
           product.map(product =>  <Product name={product.name} price={product.price}></Product> )
         }
-          {/* <Product name={product[0].name} price={product[0].price}></Product>
-          <Product name={product[1].name} price={product[1].price}></Product>
-          <Product name={product[2].name} price={product[2].price}></Product> */}
+
           {
        StudentName.map(student => <Person name={student} department="Computer science and Engineering"></Person> )
           }
-          {/* <Person name={StudentName[0]} department="Computer science and Engineering"></Person>
-          <Person name={StudentName[1]} department="Computer science and Engineering"></Person>
-          <Person name={StudentName[2]} department="Computer science and Engineering"></Person>
-          <Person name={StudentName[3]} department="Computer science and Engineering"></Person> */}
+        
       </header>
       
     </div>
@@ -44,7 +41,7 @@ function App() {
 }
 
 function Person(props) {
-  console.log(props);
+  //console.log(props);
 
   return(
     <div className="StudentDetails">
@@ -74,5 +71,42 @@ function Product(props) {
     </div>
   )
   
+}
+function Counter(){
+const [count,setCount] = useState(10);
+const handleIncrease = () => {
+  setCount(count + 1);
+}
+  return(
+    <div>
+      <h1>Counter : {count} </h1>
+      <button onClick = {handleIncrease}>increase</button><br/>
+      <button onClick = {() => setCount(count - 1)}>decrease</button>
+
+    </div>
+  )
+}
+
+
+function Users(){
+  const [users,setUser] = useState([]);
+
+  useEffect (()=>{
+    console.log("calling Effect");
+    fetch("https://jsonplaceholder.typicode.com/users")
+    .then(res => res.json())
+    .then(data => setUser(data))
+  }, [])
+  
+  return(
+    <div>
+      <h1>Dynamic User: {users.length}</h1>
+      <ol>
+        {
+          users.map(user => <li>{user.email}</li> )
+        }
+      </ol>
+    </div>
+  )
 }
 export default App;
